@@ -4,12 +4,18 @@ import { FiInfo, FiLink } from "react-icons/fi";
 import { RiLockPasswordLine } from "react-icons/ri";
 
 import { useForm } from "../context/FormContext";
+import { useState } from "react";
 
 const AddFormField = () => {
-  const { handleAddField } = useForm();
+  const { handleAddField, form } = useForm();
+  const [error, setError] = useState(null)
 
   const handleSelectField = (type) => {
     if (!type) return;
+    if(form.currentForm.fields.length >20) {
+      setError('You cant add above 20 fields to a single form')
+      return
+    }
     handleAddField(type);
   };
 
@@ -17,14 +23,14 @@ const AddFormField = () => {
     <div className="w-full">
       <div className="border border-gray-300  shadow-sm p-5 bg-white">
         <p className="text-sm text-gray-600 mb-3 flex items-center">
-          <FiInfo className="mr-2 text-pink-500" />
+          <FiInfo className="mr-2 text-pink-500 " />
           Click on the field to add new field to the form
         </p>
 
         <h3 className="text-center font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
           Form Fields
         </h3>
-
+         {error && <p className=" flex items-center mb-4 text-sm ml-10 text-red-500"><FiInfo className="mr-2 text-red-700" />{error}</p>}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <div className="flex flex-col items-center">
             <div className="  mb-3">
